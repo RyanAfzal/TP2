@@ -13,7 +13,11 @@ public class Lemari {
 
     // TODO : Implementasi method print
     public void print(){
-        return;
+        for (int i = 0 ; i < this.ukuran; i++){
+            System.out.println("==================");
+            
+            System.out.println("==================");
+        }
     }
 
     // TODO : Implementasi method beliObat

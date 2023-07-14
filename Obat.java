@@ -12,22 +12,22 @@ public class Obat {
 
     // TODO : Implementasi method getter getKategori
     public String getKategori(){
-        return "";
+        return kategori;
     }
 
     // TODO : Implementasi method getter getNama
     public String getNama(){
-        return "";
+        return nama;
     }
 
     // TODO : Implementasi method getter getHarga
     public int getHarga(){
-        return 0;
+        return harga;
     }
 
     // TODO : Implementasi method getter getStok
     public int getStok(){
-        return 0;
+        return stok;
     }
 
     // TODO : Implementasi method setter setKategori

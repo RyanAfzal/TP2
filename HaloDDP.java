@@ -18,17 +18,21 @@ public class HaloDDP {
         // TODO : Buat objek lemari dengan ukuran yang sudah ditentukan
         Lemari lemari = new Lemari(baris);
 
+
         System.out.println("Silahkan tentukan kategori obat untuk setiap rak");
         // TODO : Implementasi input kategori rak
-        System.out.print("Rak ke-1: ");
-        String rak1 = input.next();
-        System.out.println("Rak ke-1 adalah rak obat "+rak1);
-        System.out.print("Rak ke-2: ");
-        String rak2 = input.next();
-        System.out.println("Rak ke-1 adalah rak obat "+rak2);
-        System.out.print("Rak ke-3: ");
-        String rak3 = input.next();
-        System.out.println("Rak ke-1 adalah rak obat "+rak3);
+        for (int i = 0 ; i < baris ; i ++){
+            System.out.print("Rak ke-"+(i+1)+": ");
+            Rak rak = new Rak(kolom,input.next());
+            lemari.addRak(rak, i);
+            System.out.println("Rak ke-"+(i+1)+" adalah rak obat "+ rak.getKategoriRak());
+            Obat obat = new Obat("Kosong", 0, rak.getKategoriRak());
+            for (int j = 0 ; j < kolom ; j++){
+                rak.tambahObat(obat, j);
+            }
+        }
+
+        System.out.println("Rak obat hari ini: ");
 
         while (true) {
             System.out.println();
