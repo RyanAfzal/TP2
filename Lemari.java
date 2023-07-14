@@ -14,9 +14,11 @@ public class Lemari {
     // TODO : Implementasi method print
     public void print(){
         for (int i = 0 ; i < this.ukuran; i++){
+            System.out.println(this.rak[i].getKategoriRak());
             System.out.println("==================");
-            
+            this.rak[i].printRak();
             System.out.println("==================");
+            System.out.println();
         }
     }
 

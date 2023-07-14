@@ -4,10 +4,24 @@ public class Obat {
     private int harga;
     private int stok;
 
+    public Obat(){
+
+    }
+    
     public Obat(String nama, int stok, String kategori){
         this.nama = nama;
         this.stok = stok;
         this.kategori = kategori;
+    }
+
+    //Override agar bisa print element dari array
+    public String toString() {
+        if (stok == 0){
+        return nama + "";
+        }
+        else{
+            return nama + " (Stok: " + stok + ")";
+        }
     }
 
     // TODO : Implementasi method getter getKategori

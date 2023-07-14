@@ -33,6 +33,7 @@ public class HaloDDP {
         }
 
         System.out.println("Rak obat hari ini: ");
+        lemari.print();
 
         while (true) {
             System.out.println();

@@ -3,6 +3,9 @@ public class Rak {
     private String kategori;
     private Obat[] daftarObat;
 
+    public Rak(){
+    }
+
     public Rak(int size, String kategori){
         this.kategori = kategori;
         this.daftarObat = new Obat[size];
@@ -21,6 +24,10 @@ public class Rak {
     
     // TODO : Implementasi method printRak
     public void printRak(){
+        for (int i = 0 ; i < this.size ; i++){
+            System.out.print("| " + daftarObat[i] + " ");
+        }
+        System.out.println();
     }
 
     // TODO : Implementasi method getListObat
