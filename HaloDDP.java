@@ -18,7 +18,6 @@ public class HaloDDP {
         // TODO : Buat objek lemari dengan ukuran yang sudah ditentukan
         Lemari lemari = new Lemari(baris);
 
-
         System.out.println("Silahkan tentukan kategori obat untuk setiap rak");
         // TODO : Implementasi input kategori rak
         for (int i = 0 ; i < baris ; i ++){
@@ -43,12 +42,61 @@ public class HaloDDP {
             System.out.println("3. Beli obat");
             System.out.println("99. Keluar");
             System.out.print("Pilih menu: ");
-            String menu = input.nextLine();
+            String menu = input.next();
 
             if (menu.equals("1")) {
                 // TODO : Implementasi input obat
+                System.out.print("Masukkan nama obat: ");
+                String namaObat = input.next();
+                System.out.print("Masukkan kategori obat: ");
+                String kategori = input.next();
+                boolean kategoriSesuai = false;
+                for (int i = 0 ; i < baris; i++){
+                    String kategoriPadaArray = lemari.getRak(i).getKategoriRak();
+                    if (kategori.equalsIgnoreCase(kategoriPadaArray)){
+                        kategoriSesuai = true;
+                    }
+                }
+
+                if (kategoriSesuai == true){
+                    System.out.println("Kategori obat valid");
+                    System.out.print("Masukkan posisi obat: ");
+                    // Untuk handle agar scanner tidak skip input.nextLine()
+                    input.nextLine();
+                    String posisi = input.nextLine();
+                    String [] posisiSplit = posisi.split(",");
+
+                    if (Integer.parseInt(posisiSplit[0])>baris || Integer.parseInt(posisiSplit[1]) > kolom){
+                        System.out.println("Posisi tidak ada di lemari");
+                        continue;
+                    }
+
+                    Rak rak = lemari.getRak(Integer.parseInt(posisiSplit[0])-1);
+                    String namaObatDiDaftarObat = "" + (rak.getListObat()[Integer.parseInt(posisiSplit[1])-1]);
+                    
+                    if (namaObatDiDaftarObat.equalsIgnoreCase("Kosong")){
+                        System.out.print("Masukkan stok obat: ");
+                        int stokObat = input.nextInt();
+                        Obat obat = new Obat(namaObat,stokObat,kategori);
+                        rak.tambahObat(obat, Integer.parseInt(posisiSplit[1])-1);
+                        System.out.println("Obat berhasil ditambahkan");
+                    }
+
+                    else{
+                        System.out.println("Rak sudah terisi obat");
+
+                    }
+                }
+
+                else{
+                    System.out.println("Kategori obat tidak valid");
+                }
+
+
             } else if (menu.equals("2")) {
                 // TODO : Implementasi print obat
+                lemari.print();
+
             } else if (menu.equals("3")) {
                 // TODO : Implementasi beli obat
             } else if (menu.equals("99")){
