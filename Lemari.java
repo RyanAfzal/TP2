@@ -24,11 +24,32 @@ public class Lemari {
 
     // TODO : Implementasi method beliObat
     public boolean beliObat(Obat obat, int jumlah) {
-        return false; 
+        if (obat == null){
+            return false; 
+        }
+
+        else{
+            if (obat.getStok()<jumlah){
+                return false;
+            }
+
+            else{
+                return true;
+            }
+        }
     }
 
     // TODO : Implementasi method searchObat
     public Obat searchObat(String namaObat) {
+        for (int i = 0 ; i < this.ukuran ; i++){
+            Obat [] daftarObat = this.rak[i].getListObat();
+            for (int j = 0; j < daftarObat.length ; j++) {
+                Obat obat = daftarObat[j];
+                if (obat.getNama().equalsIgnoreCase(namaObat)) {
+                    return obat;
+                }
+            }
+        }
         return null;
     }
 

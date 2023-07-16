@@ -3,25 +3,11 @@ public class Obat {
     private String nama;
     private int harga;
     private int stok;
-
-    public Obat(){
-
-    }
     
     public Obat(String nama, int stok, String kategori){
         this.nama = nama;
         this.stok = stok;
         this.kategori = kategori;
-    }
-
-    //Override agar bisa print element dari array
-    public String toString() {
-        if (stok == 0){
-        return nama + "";
-        }
-        else{
-            return nama + " (Stok: " + stok + ")";
-        }
     }
 
     // TODO : Implementasi method getter getKategori
@@ -45,17 +31,18 @@ public class Obat {
     }
 
     // TODO : Implementasi method setter setKategori
-    public void setKategori(String kategori){
+    public void setKategori(String newKategori){
+        kategori = newKategori;
     }
 
     // TODO : Implementasi method setter setNama
-    public void setStok(int stok){
-        return;
+    public void setStok(int newStok){
+        stok =  newStok;
     }
 
     // TODO : Implementasi method setter setHarga
-    public void setHarga(int harga){
-        return;
+    public void setHarga(int newHarga){
+        harga = newHarga;
     }
 
 }

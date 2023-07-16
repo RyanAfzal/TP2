@@ -4,6 +4,9 @@ public class HaloDDP {
     public static void main(String[] args) {
         int BASE_PRICE = 5000; 
         Scanner input = new Scanner(System.in);
+        int statusBeliObat = 0;
+        String obatObatYgDibeli = "";
+        String jumlahTiapObatYGDibeli = "";
 
         System.out.print("Selamat datang Haloddp. Berapa ukuran lemari obat hari ini? (max row 5) \n");
     
@@ -72,7 +75,7 @@ public class HaloDDP {
                     }
 
                     Rak rak = lemari.getRak(Integer.parseInt(posisiSplit[0])-1);
-                    String namaObatDiDaftarObat = "" + (rak.getListObat()[Integer.parseInt(posisiSplit[1])-1]);
+                    String namaObatDiDaftarObat = rak.getListObat()[Integer.parseInt(posisiSplit[1])-1].getNama();
                     
                     if (namaObatDiDaftarObat.equalsIgnoreCase("Kosong")){
                         System.out.print("Masukkan stok obat: ");
@@ -99,9 +102,59 @@ public class HaloDDP {
 
             } else if (menu.equals("3")) {
                 // TODO : Implementasi beli obat
+                System.out.print("Obat apa yang ingin dibeli? ");
+                String obatYgDibeli = input.next();
+                System.out.print("Ingin beli berapa banyak? ");
+                int jumlahYgDibeli = input.nextInt();
+
+                if (lemari.beliObat(lemari.searchObat(obatYgDibeli), jumlahYgDibeli) == false){
+                    if (lemari.searchObat(obatYgDibeli) == null){
+                        System.out.println("Obat " + obatYgDibeli + " tidak tersedia");
+                    }
+
+                    else{
+                        System.out.println("Stok obat " + obatYgDibeli + " kurang dari " + jumlahYgDibeli);
+                    }
+                }
+
+                else{
+                    System.out.println("Berhasil membeli obat");
+                    statusBeliObat += 1;
+                    int harga = BASE_PRICE;
+                    obatObatYgDibeli += obatYgDibeli + " ";
+                    jumlahTiapObatYGDibeli += String.valueOf(jumlahYgDibeli) + " ";
+                    int sisaStok = lemari.searchObat(obatYgDibeli).getStok()-jumlahYgDibeli;
+                    lemari.searchObat(obatYgDibeli).setStok(sisaStok);
+                    for (int i = 0 ; i < baris ; i++){
+                        Obat [] daftarObat = lemari.getRak(i).getListObat();
+                        for (int j = 0; j < daftarObat.length ; j++) {
+                            Obat obat = daftarObat[j];
+                            if (obat.getNama().equals(obatYgDibeli)) {
+                                harga += (i)*10000 + (j)*5000;
+                                obat.setHarga(harga);
+                            }    
+                        }
+                    }
+                }
+
             } else if (menu.equals("99")){
                 // TODO : Implementasi keluar
+                if (statusBeliObat < 1){
+                    System.out.println("Tetap semangat. Besok pasti akan jauh lebih baik!");
+                }
+
+                else{
+                    String [] daftarObatYgDibeli = obatObatYgDibeli.split(" ");
+                    String [] daftarJumlahTiapObatYgDibeli = jumlahTiapObatYGDibeli.split(" ");
+                    System.out.println("Riwayat transaksi hari ini\n");
+                    System.out.println("No. Nama - Jumlah - Total Harga");
+                    for (int i = 0 ; i < daftarObatYgDibeli.length ; i++){
+                        System.out.println((i+1) + " " + daftarObatYgDibeli[i] + " - " + daftarJumlahTiapObatYgDibeli[i] + " - " + lemari.searchObat(daftarObatYgDibeli[i]).getHarga() * Integer.parseInt(daftarJumlahTiapObatYgDibeli[i])); 
+                    }
+                }
+
                 break;
+
             } else {
                 System.out.println("Menu tidak tersedia");
             }
