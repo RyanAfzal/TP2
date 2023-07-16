@@ -7,31 +7,96 @@ public class HaloDDP {
         int statusBeliObat = 0;
         String obatObatYgDibeli = "";
         String jumlahTiapObatYGDibeli = "";
+        int jmlLoopRunStop = 0;
+        boolean runStopProgram = false;
+        String semuaKategoriAwal = "";
+        int indexLoopMasukanKategoriAwal = 0;
 
+        while (!runStopProgram){
+
+        if (jmlLoopRunStop > 0){
+            System.out.println("\n");
+        }
+
+        System.out.println("=============================RUN PROGRAM================================");
         System.out.print("Selamat datang Haloddp. Berapa ukuran lemari obat hari ini? (max row 5) \n");
     
         // TODO : Implementasi validasi input ukuran lemari
-        String ukuran = input.next();
+        String ukuran = input.nextLine();
+
         String [] barisKolom = ukuran.split("[xX]");
-        System.out.println("Rak obat hari ini berukuran " + ukuran);
+        
+        try{
+            Integer.parseInt(barisKolom[0]);
+            Integer.parseInt(barisKolom[1]);
+        }
+
+        catch (Exception e){
+            System.out.println("Format lemari tidak sesuai. Seharusnya <row>x<column>");
+            System.out.println("=============================PROGRAM STOPPED============================");
+            jmlLoopRunStop += 1;
+            continue;
+        }
+
+        if (barisKolom.length>2){
+            System.out.println("Format lemari tidak sesuai. Seharusnya <row>x<column>");
+            System.out.println("=============================PROGRAM STOPPED============================");
+            jmlLoopRunStop += 1;
+            continue;
+        }
 
         int baris = Integer.parseInt(barisKolom[0]);
         int kolom = Integer.parseInt(barisKolom[1]);
+
+        if (baris < 1 || kolom < 1){
+            System.out.println("Ukuran lemari tidak bisa < 1");
+            System.out.println("=============================PROGRAM STOPPED============================");
+            jmlLoopRunStop += 1;
+            continue;
+        }
+
+        if (baris > 5){
+            System.out.println("Ukuran baris tidak boleh lebih besar dari 5");
+            System.out.println("=============================PROGRAM STOPPED============================");
+            jmlLoopRunStop += 1;
+            continue;
+        }
+
+        System.out.println("Rak obat hari ini berukuran " + ukuran);
 
         // TODO : Buat objek lemari dengan ukuran yang sudah ditentukan
         Lemari lemari = new Lemari(baris);
 
         System.out.println("Silahkan tentukan kategori obat untuk setiap rak");
         // TODO : Implementasi input kategori rak
-        for (int i = 0 ; i < baris ; i ++){
-            System.out.print("Rak ke-"+(i+1)+": ");
-            Rak rak = new Rak(kolom,input.next());
-            lemari.addRak(rak, i);
-            System.out.println("Rak ke-"+(i+1)+" adalah rak obat "+ rak.getKategoriRak());
-            Obat obat = new Obat("Kosong", 0, rak.getKategoriRak());
-            for (int j = 0 ; j < kolom ; j++){
-                rak.tambahObat(obat, j);
+        while (indexLoopMasukanKategoriAwal < baris){
+            boolean kategoriSudahAda = false;
+            String[] daftarSemuaKategoriAwal = semuaKategoriAwal.split(" ");
+            System.out.print("Rak ke-"+(indexLoopMasukanKategoriAwal+1)+": ");
+            String kategoriAwal = input.next();
+
+            for (String category : daftarSemuaKategoriAwal){
+                if (category.equalsIgnoreCase(kategoriAwal)){
+                    kategoriSudahAda = true;
+                }
             }
+
+            if (kategoriSudahAda == false){
+                semuaKategoriAwal += kategoriAwal + " ";
+                Rak rak = new Rak(kolom,kategoriAwal);
+                lemari.addRak(rak, indexLoopMasukanKategoriAwal);
+                System.out.println("Rak ke-"+(indexLoopMasukanKategoriAwal+1)+" adalah rak obat "+ rak.getKategoriRak());
+                Obat obat = new Obat("Kosong", 0, rak.getKategoriRak());
+                for (int j = 0 ; j < kolom ; j++){
+                    rak.tambahObat(obat, j);
+                }
+            }
+
+            else{
+                System.out.println("Kategori rak tidak valid");
+                continue;
+            }
+            indexLoopMasukanKategoriAwal += 1;
         }
 
         System.out.println("Rak obat hari ini: ");
@@ -71,6 +136,11 @@ public class HaloDDP {
 
                     if (Integer.parseInt(posisiSplit[0])>baris || Integer.parseInt(posisiSplit[1]) > kolom){
                         System.out.println("Posisi tidak ada di lemari");
+                        continue;
+                    }
+
+                    if (kategori.equalsIgnoreCase(lemari.getRak(Integer.parseInt(posisiSplit[0])-1).getKategoriRak()) == false){
+                        System.out.println("Rak bukan untuk kategori obat " + kategori);
                         continue;
                     }
 
@@ -151,6 +221,7 @@ public class HaloDDP {
                     for (int i = 0 ; i < daftarObatYgDibeli.length ; i++){
                         System.out.println((i+1) + " " + daftarObatYgDibeli[i] + " - " + daftarJumlahTiapObatYgDibeli[i] + " - " + lemari.searchObat(daftarObatYgDibeli[i]).getHarga() * Integer.parseInt(daftarJumlahTiapObatYgDibeli[i])); 
                     }
+                    System.out.println();
                 }
 
                 break;
@@ -161,6 +232,8 @@ public class HaloDDP {
         }
 
         input.close();
+        runStopProgram = true;
         System.out.println("Terima kasih telah menggunakan Haloddp!");
+        }
     }
 }
