@@ -1,6 +1,8 @@
 import java.util.Scanner;
 
+// Class untuk HaloDDP
 public class HaloDDP {
+    // Main program
     public static void main(String[] args) {
         int BASE_PRICE = 5000; 
         Scanner input = new Scanner(System.in);
@@ -134,6 +136,21 @@ public class HaloDDP {
                     String posisi = input.nextLine();
                     String [] posisiSplit = posisi.split(",");
 
+                    try{
+                        Integer.parseInt(posisiSplit[0]);
+                        Integer.parseInt(posisiSplit[1]);
+                    }
+
+                    catch (Exception e){
+                        System.out.println("Format tidak sesuai seharusnya <posisi1>,<posisi2>");
+                        continue;
+                    }
+
+                    if (Integer.parseInt(posisiSplit[0])<1 || Integer.parseInt(posisiSplit[1])<1){
+                        System.out.println("Posisi tidak bisa kurang dari 1");
+                        continue;
+                    }
+                    
                     if (Integer.parseInt(posisiSplit[0])>baris || Integer.parseInt(posisiSplit[1]) > kolom){
                         System.out.println("Posisi tidak ada di lemari");
                         continue;
