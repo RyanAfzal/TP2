@@ -6,14 +6,15 @@ public class HaloDDP {
     public static void main(String[] args) {
         int BASE_PRICE = 5000; 
         Scanner input = new Scanner(System.in);
-        int statusBeliObat = 0;
-        String obatObatYgDibeli = "";
-        String jumlahTiapObatYGDibeli = "";
-        int jmlLoopRunStop = 0;
-        boolean runStopProgram = false;
-        String semuaKategoriAwal = "";
-        int indexLoopMasukanKategoriAwal = 0;
+        int statusBeliObat = 0; //untuk periksa apakah sudah beli obat atau belum
+        String obatObatYgDibeli = ""; //untuk menyimpan data obat apa saja yang sudah dibeli
+        String jumlahTiapObatYGDibeli = ""; //untuk menyimpan data berapa saja jumlah obat yang dibeli
+        int jmlLoopRunStop = 0; //untuk periksa apakah program sudah pernah run dan stop program
+        boolean runStopProgram = false; //untuk penanda berhenti nya loop run dan stop program
+        String semuaKategoriAwal = ""; //untuk simpan semua data kategori saat awal memulai program
+        int indexLoopMasukanKategoriAwal = 0; //untuk penanda sudah di rak ke berapa saat meminta kategori di awal program
 
+        // loop sampai input ukuran lemari benar
         while (!runStopProgram){
 
         if (jmlLoopRunStop > 0){
@@ -77,12 +78,14 @@ public class HaloDDP {
             System.out.print("Rak ke-"+(indexLoopMasukanKategoriAwal+1)+": ");
             String kategoriAwal = input.next();
 
+            //untuk memeriksa apakah kategori sudah ada
             for (String category : daftarSemuaKategoriAwal){
                 if (category.equalsIgnoreCase(kategoriAwal)){
                     kategoriSudahAda = true;
                 }
             }
 
+            //Jika belum
             if (kategoriSudahAda == false){
                 semuaKategoriAwal += kategoriAwal + " ";
                 Rak rak = new Rak(kolom,kategoriAwal);
@@ -94,6 +97,7 @@ public class HaloDDP {
                 }
             }
 
+            //Jika sudah ada (handle kategori tidak duplikat)
             else{
                 System.out.println("Kategori rak tidak valid");
                 continue;
@@ -101,9 +105,11 @@ public class HaloDDP {
             indexLoopMasukanKategoriAwal += 1;
         }
 
+        //mencetak lemari kondisi awal
         System.out.println("Rak obat hari ini: ");
         lemari.print();
 
+        // layanan HaloDDP
         while (true) {
             System.out.println();
             System.out.println("Menu:");
@@ -121,6 +127,8 @@ public class HaloDDP {
                 System.out.print("Masukkan kategori obat: ");
                 String kategori = input.next();
                 boolean kategoriSesuai = false;
+
+                //periksa apakah kategori obat sesuai dengan kategori di rak
                 for (int i = 0 ; i < baris; i++){
                     String kategoriPadaArray = lemari.getRak(i).getKategoriRak();
                     if (kategori.equalsIgnoreCase(kategoriPadaArray)){
@@ -128,6 +136,7 @@ public class HaloDDP {
                     }
                 }
 
+                //Jika sesuai
                 if (kategoriSesuai == true){
                     System.out.println("Kategori obat valid");
                     System.out.print("Masukkan posisi obat: ");
@@ -136,6 +145,7 @@ public class HaloDDP {
                     String posisi = input.nextLine();
                     String [] posisiSplit = posisi.split(",");
 
+                    //Validasi input
                     try{
                         Integer.parseInt(posisiSplit[0]);
                         Integer.parseInt(posisiSplit[1]);
@@ -164,6 +174,7 @@ public class HaloDDP {
                     Rak rak = lemari.getRak(Integer.parseInt(posisiSplit[0])-1);
                     String namaObatDiDaftarObat = rak.getListObat()[Integer.parseInt(posisiSplit[1])-1].getNama();
                     
+                    // Menambahkan obat jika rak masih kosong
                     if (namaObatDiDaftarObat.equalsIgnoreCase("Kosong")){
                         System.out.print("Masukkan stok obat: ");
                         int stokObat = input.nextInt();
@@ -172,12 +183,14 @@ public class HaloDDP {
                         System.out.println("Obat berhasil ditambahkan");
                     }
 
+                    // Menambahkan obat jika rak sudah terisi
                     else{
                         System.out.println("Rak sudah terisi obat");
 
                     }
                 }
 
+                //Jika kategori obat tidak sesuai dengan kategori di rak
                 else{
                     System.out.println("Kategori obat tidak valid");
                 }
@@ -194,24 +207,32 @@ public class HaloDDP {
                 System.out.print("Ingin beli berapa banyak? ");
                 int jumlahYgDibeli = input.nextInt();
 
+                //Jika tidak berhasil beli obat
                 if (lemari.beliObat(lemari.searchObat(obatYgDibeli), jumlahYgDibeli) == false){
+                    // Jika obat tidak tersedia
                     if (lemari.searchObat(obatYgDibeli) == null){
                         System.out.println("Obat " + obatYgDibeli + " tidak tersedia");
                     }
 
+                    // Jika stok obat kurang
                     else{
                         System.out.println("Stok obat " + obatYgDibeli + " kurang dari " + jumlahYgDibeli);
                     }
                 }
 
+                // Jika berhasil membeli obat
                 else{
                     System.out.println("Berhasil membeli obat");
                     statusBeliObat += 1;
                     int harga = BASE_PRICE;
                     obatObatYgDibeli += obatYgDibeli + " ";
                     jumlahTiapObatYGDibeli += String.valueOf(jumlahYgDibeli) + " ";
+
+                    // Memperbarui stok obat
                     int sisaStok = lemari.searchObat(obatYgDibeli).getStok()-jumlahYgDibeli;
                     lemari.searchObat(obatYgDibeli).setStok(sisaStok);
+
+                    // Menghitung harga obat
                     for (int i = 0 ; i < baris ; i++){
                         Obat [] daftarObat = lemari.getRak(i).getListObat();
                         for (int j = 0; j < daftarObat.length ; j++) {
@@ -226,10 +247,13 @@ public class HaloDDP {
 
             } else if (menu.equals("99")){
                 // TODO : Implementasi keluar
+
+                //Jika tidak beli obat
                 if (statusBeliObat < 1){
                     System.out.println("Tetap semangat. Besok pasti akan jauh lebih baik!");
                 }
 
+                // Jika beli obat
                 else{
                     String [] daftarObatYgDibeli = obatObatYgDibeli.split(" ");
                     String [] daftarJumlahTiapObatYgDibeli = jumlahTiapObatYGDibeli.split(" ");
@@ -242,14 +266,15 @@ public class HaloDDP {
                 }
 
                 break;
-
+            
+                //Jika menu tidak tersedia
             } else {
                 System.out.println("Menu tidak tersedia");
             }
         }
 
         input.close();
-        runStopProgram = true;
+        runStopProgram = true; //Agar program berhenti
         System.out.println("Terima kasih telah menggunakan Haloddp!");
         }
     }
