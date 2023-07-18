@@ -71,8 +71,10 @@ public class Lemari {
             Obat [] daftarObat = this.rak[i].getListObat();
             for (int j = 0; j < daftarObat.length ; j++) {
                 Obat obat = daftarObat[j];
-                if (obat.getNama().equalsIgnoreCase(namaObat)) {
-                    return obat;
+                if (obat != null){
+                    if (obat.getNama().equalsIgnoreCase(namaObat)) {
+                        return obat;
+                    }
                 }
             }
         }

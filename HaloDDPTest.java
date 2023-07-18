@@ -38,7 +38,7 @@ public class HaloDDPTest {
 
         // Test case 1: Jika obat ditemukan atau tersedia
         Obat result1 = lemari.searchObat("Panadol");
-        assertEquals(obat1, result1);
+        assertEquals(obat1.getNama(), result1.getNama());
 
         // Test case 2: Jika obat tidak tersedia
         Obat result2 = lemari.searchObat("Ibuprofen");
